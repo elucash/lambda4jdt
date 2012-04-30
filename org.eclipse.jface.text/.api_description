@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component name="org.eclipse.jface.text_3.7.2.v20111213-1208" version="1.2">
+    <plugin id="org.eclipse.jface.text_3.7.2.v20111213-1208"/>
+    <package name="org.eclipse.jface.text" visibility="1">
+        <type name="AbstractHoverInformationControlManager" restrictions="0">
+            <method name="getInternalAccessor" restrictions="24" signature="()Lorg/eclipse/jface/internal/text/InternalAccessor;"/>
+        </type>
+        <type name="AbstractInformationControlManager" restrictions="0">
+            <method name="getInternalAccessor" restrictions="24" signature="()Lorg/eclipse/jface/internal/text/InternalAccessor;"/>
+        </type>
+        <type name="CursorLinePainter" restrictions="2"/>
+        <type name="DefaultAutoIndentStrategy" restrictions="2"/>
+        <type name="DefaultUndoManager" restrictions="2"/>
+        <type name="IEditingSupportRegistry" restrictions="3"/>
+        <type name="JFaceTextUtil" restrictions="4"/>
+        <type name="MarginPainter" restrictions="2"/>
+        <type name="TextViewer" restrictions="2"/>
+        <type name="TextViewerUndoManager" restrictions="2"/>
+    </package>
+    <package name="org.eclipse.jface.text.contentassist" visibility="1">
+        <type name="ContentAssistEvent" restrictions="4"/>
+    </package>
+    <package name="org.eclipse.jface.text.revisions" visibility="1">
+        <type name="RevisionEvent" restrictions="4"/>
+        <type name="RevisionInformation" restrictions="0">
+            <method name="applyDiff" restrictions="8" signature="([Lorg/eclipse/jface/internal/text/revisions/Hunk;)V"/>
+        </type>
+        <type name="RevisionRange" restrictions="4"/>
+    </package>
+    <package name="org.eclipse.jface.text.source" visibility="1">
+        <type name="AnnotationBarHoverManager" restrictions="0">
+            <method name="getInternalAccessor" restrictions="24" signature="()Lorg/eclipse/jface/internal/text/InternalAccessor;"/>
+        </type>
+        <type name="ImageUtilities" restrictions="6"/>
+    </package>
+    <package name="org.eclipse.jface.text.source.projection" visibility="1">
+        <type name="AnnotationBag" restrictions="2"/>
+        <type name="ProjectionAnnotationModel" restrictions="2"/>
+        <type name="ProjectionSupport" restrictions="2"/>
+        <type name="ProjectionViewer" restrictions="2"/>
+    </package>
+    <package name="org.eclipse.jface.text.templates.persistence" visibility="1">
+        <type name="TemplatePersistenceData" restrictions="2"/>
+        <type name="TemplateReaderWriter" restrictions="2"/>
+    </package>
+</component>
