@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension
+		point="org.eclipse.jdt.ui.foldingStructureProviders">
+		<provider
+			id="com.googlecode.lambda4jdt.customizedFoldingProvider"
+			name="Lambda4jdt Arrow Closures"
+			class="com.github.elucash.lambda4jdt.CutomizedJavaFoldingStructureProvider">
+		</provider>
+	</extension>
+	
+	<extension
+		point="org.eclipse.jdt.ui.foldingStructureProviders">
+		<provider
+			id="com.googlecode.lambda4jdt.javaStyleClosuresProvider"
+			name="Lambda4jdt JavaStyle Closures"
+			class="com.github.elucash.lambda4jdt.JavaStyleClosuresFoldingProvider">
+		</provider>
+	</extension>
+	
+<!--	<extension
+		point="org.eclipse.jdt.ui.foldingStructureProviders">
+		<provider
+			id="com.googlecode.lambda4jdt.ngFoldingProvider"
+			name="NG Folding"
+			class="com.googlecode.lambda4jdt.ng.FoldingProvider">
+		</provider>
+	</extension> -->
+
+</plugin>

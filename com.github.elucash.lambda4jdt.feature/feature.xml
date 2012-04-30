@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.googlecode.lambda4jdt.feature"
+      label="Lambda folding for JDT"
+      version="0.9.0.v2012"
+      provider-name="Ievgen Lukash">
+
+   <description url="http://lambda4jdt.googlecode.com">
+      Java folding extension to visually collapse (fold) anonymous
+inner classes to concise lambda expressions (closures) in Java
+Editor.
+   </description>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      http://www.eclipse.org/legal/epl-v10.html
+   </license>
+
+   <plugin
+         id="com.github.elucash.lambda4jdt"
+         download-size="0"
+         install-size="0"
+         version="0.9.0.v2012"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jface.text"
+         download-size="0"
+         install-size="0"
+         version="3.7.10.v2012"
+         unpack="false"/>
+
+</feature>
