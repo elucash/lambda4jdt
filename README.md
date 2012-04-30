@@ -9,6 +9,10 @@ Goals:
 * Remove need for marker comment, simplify to one-size fits all
 * No further support planned, no features, no Juno support etc
 
+Install plugins and then
+Preferences->Java->Editor->Folding, select folding to use "Lambda4jdt Folding"
+Any newly opened Java editor will pickup lambda4jdt
+
 Examples
 <pre>
 Executor e =...
