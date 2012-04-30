@@ -850,6 +850,9 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 				while (anomymousTypeSource.charAt(lastPreMethodOffset) == ' ') {
 					lastPreMethodOffset++;
 				}
+                if (anomymousTypeSource.charAt(lastPreMethodOffset - 1) == ' ') {
+                    lastPreMethodOffset--;
+                }
 			}
 
             // and hide it

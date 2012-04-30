@@ -5,7 +5,7 @@
 		point="org.eclipse.jdt.ui.foldingStructureProviders">
 		<provider
 			id="com.github.elucash.lambda4jdt.foldingStructureProvider"
-			name="Lambda4jdt Folding Provider"
+			name="Lambda4jdt Folding"
 			class="com.github.elucash.lambda4jdt.FoldingStructureProvider">
 		</provider>
 	</extension>
