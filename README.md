@@ -11,9 +11,13 @@ What's here:
 
 EPL License http://www.eclipse.org/legal/epl-v10.html
 
+Update site: https://github.com/elucash/lambda4jdt/raw/master/com.github.elucash.lambda4jdt.site/
+
 Install plugins and then goto
 Preferences->Java->Editor->Folding, select folding to use "Lambda4jdt Folding".
 Any newly opened Java editor will pickup lambda4jdt
+
+Read also [http://code.google.com/p/guava-libraries/wiki/FunctionalExplained#Caveats]
 
 Examples
 <pre>
