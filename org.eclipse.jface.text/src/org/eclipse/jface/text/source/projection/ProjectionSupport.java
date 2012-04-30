@@ -87,6 +87,22 @@ public class ProjectionSupport {
 		 * @see org.eclipse.jface.text.source.AnnotationPainter.IDrawingStrategy#draw(org.eclipse.swt.graphics.GC, org.eclipse.swt.custom.StyledText, int, int, org.eclipse.swt.graphics.Color)
 		 */
 		public void draw(Annotation annotation, GC gc, StyledText textWidget, int offset, int length, Color color) {
+			// XXX: Lambda4jdt annotation drawing hack
+			// Enabler for self drawing annotation which implements AnnotationPainter.IDrawingStrategy
+			// Annotation can customize drawing or surpress drawing at all
+			if (annotation instanceof AnnotationPainter.IDrawingStrategy) {
+				AnnotationPainter.IDrawingStrategy selfDrawingAnnotation = (AnnotationPainter.IDrawingStrategy) annotation;
+				try {
+					// just delegate to annotation drawing strategy
+					selfDrawingAnnotation.draw(annotation, gc, textWidget, offset, length, color);
+					// return immediately when succeded
+					return;
+				} catch (UnsupportedOperationException e) {
+					// fallback to default behavior
+					// this enables self drawing annotation to delegate back to default implementation.
+				}
+			}
+			
 			if (annotation instanceof ProjectionAnnotation) {
 				ProjectionAnnotation projectionAnnotation= (ProjectionAnnotation) annotation;
 				if (projectionAnnotation.isCollapsed()) {

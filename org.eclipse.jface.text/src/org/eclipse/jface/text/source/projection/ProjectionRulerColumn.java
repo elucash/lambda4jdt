@@ -102,6 +102,15 @@ class ProjectionRulerColumn extends AnnotationRulerColumn {
 			model.toggleExpansionState(annotation);
 		}
 	}
+	
+	//XXX Lambda4jdt helper method
+	private boolean includes(int line, IDocument document, Position p) {
+		try {
+			return p.includes(document.getLineOffset(line));
+		} catch (BadLocationException e) {
+			return false;
+		}
+	}
 
 	/**
 	 * Returns the projection annotation of the column's annotation
@@ -114,6 +123,7 @@ class ProjectionRulerColumn extends AnnotationRulerColumn {
 	private ProjectionAnnotation findAnnotation(int line, boolean exact) {
 
 		ProjectionAnnotation previousAnnotation= null;
+		ProjectionAnnotation fallbackAnnotation = null;//XXX Lambda4jdt added local
 
 		IAnnotationModel model= getModel();
 		if (model != null) {
@@ -131,6 +141,13 @@ class ProjectionRulerColumn extends AnnotationRulerColumn {
 						continue;
 
 					int distance= getDistance(annotation, p, document, line);
+					if (distance == -1 && !exact) {// XXX Lambda4jdt						
+						// When !exact we can pick up collapsed annotation on same line for
+						// which distance mysteriously happen to be -1
+						// Fixes quirk when clicking (+) expand icon an nothing happens
+						if (annotation.isCollapsed() && includes(line, document, p))
+	                        fallbackAnnotation = annotation;
+					}
 					if (distance == -1)
 						continue;
 
@@ -146,7 +163,8 @@ class ProjectionRulerColumn extends AnnotationRulerColumn {
 			}
 		}
 
-		return previousAnnotation;
+		return previousAnnotation != null ? previousAnnotation : fallbackAnnotation;//XXX Lambda4jdt
+		// return previousAnnotation; //original return
 	}
 
 	/**

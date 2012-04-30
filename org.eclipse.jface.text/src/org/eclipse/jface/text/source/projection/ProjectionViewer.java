@@ -634,9 +634,13 @@ public class ProjectionViewer extends SourceViewer implements ITextViewerExtensi
 				fHandleProjectionChanges= false;
 				// https://bugs.eclipse.org/bugs/show_bug.cgi?id=108258
 				// make sure the document range is strictly line based
-				int end= offset + length;
-				offset= toLineStart(projection.getMasterDocument(), offset, false);
-				length= toLineStart(projection.getMasterDocument(), end, true) - offset;
+				//XXX: Lambda4jdt Commented out bugfix.
+				//It is enabler for Lambda4jdt. Besides, following bug108258 it is obvious that
+				//this fix doesnt solve anything, but does strictly limit projection infrastructure 
+				// int end= offset + length;
+				// offset= toLineStart(projection.getMasterDocument(), offset, false);
+				// length= toLineStart(projection.getMasterDocument(), end, true) - offset;
+				//XXX: end hack
 				projection.addMasterDocumentRange(offset, length);
 			} finally {
 				fHandleProjectionChanges= true;
@@ -664,9 +668,13 @@ public class ProjectionViewer extends SourceViewer implements ITextViewerExtensi
 				fHandleProjectionChanges= false;
 				// https://bugs.eclipse.org/bugs/show_bug.cgi?id=108258
 				// make sure the document range is strictly line based
-				int end= offset + length;
-				offset= toLineStart(projection.getMasterDocument(), offset, false);
-				length= toLineStart(projection.getMasterDocument(), end, true) - offset;
+				//XXX: Lambda4jdt Commented out bugfix.
+				//It is enabler for Lambda4jdt. Besides, following bug108258 it is obvious that
+				//this fix doesnt solve anything, but does strictly limit projection infrastructure 
+				// int end= offset + length;
+				// offset= toLineStart(projection.getMasterDocument(), offset, false);
+				// length= toLineStart(projection.getMasterDocument(), end, true) - offset;
+				//XXX: end hack
 				projection.removeMasterDocumentRange(offset, length);
 			} finally {
 				fHandleProjectionChanges= true;
@@ -1173,6 +1181,21 @@ public class ProjectionViewer extends SourceViewer implements ITextViewerExtensi
 		return null;
 	}
 
+	/**
+	 * Labda4jdt Override original implementation to suppress limitation of returning
+	 * only lines which mapped 1:1 in slave and master document. Needed 1:n
+	 * to work properly
+	 */
+	public int widgetLine2ModelLine(int widgetLine) {
+		if (fInformationMapping == null)
+			return widgetLine;
+		try {
+			return fInformationMapping.toOriginLines(widgetLine).getOffset();
+		} catch (Exception e) {
+		}
+	    return -1;
+	}
+	
 	private void processChanges(Annotation[] annotations, boolean fireRedraw, List coverage) throws BadLocationException {
 		for (int i= 0; i < annotations.length; i++) {
 			ProjectionAnnotation annotation= (ProjectionAnnotation) annotations[i];
@@ -1189,7 +1212,36 @@ public class ProjectionViewer extends SourceViewer implements ITextViewerExtensi
 						for (int j= 0; j < regions.length; j++)
 							collapse(regions[j].getOffset(), regions[j].getLength(), fireRedraw);
 				} else {
-					expand(position.getOffset(), position.getLength(), fireRedraw);
+					//XXX: Lambda4jdt commented out original execution path
+					//expand(position.getOffset(), position.getLength(), fireRedraw);
+
+					//XXX: Lambda4jdt
+					// Added hack to allow projection position to compute uncollapsed regions back
+					// instead of using direct position.getOffset(), position.getLength()
+					// It is used for case of clause folding : projection position hides additional content
+					// before and after projection position region.
+					// This chunk of code can be definately source of bugs, because improperly
+					// changed IProjectionPosition model can expose back not a very same regions
+					// that was originally collapsed
+					IDocument visibleDocument = getVisibleDocument();
+					if (position instanceof IProjectionPosition) {
+						IDocument masterDocument = ((ProjectionDocument) visibleDocument)
+						        .getMasterDocument();
+
+						IProjectionPosition projectionPosition = (IProjectionPosition) position;
+						IRegion[] regions = projectionPosition.computeProjectionRegions(masterDocument);
+						if (regions != null) {
+							// expand every recomputed region included in position
+							for (int j = 0; j < regions.length; j++)
+								expand(regions[j].getOffset(), regions[j].getLength(), fireRedraw);
+						}
+                        else
+	                        expand(position.getOffset(), position.getLength(), fireRedraw);// like original
+
+					} else
+	                    expand(position.getOffset(), position.getLength(), fireRedraw);// like original
+					
+					//XXX Lambda4jdt end
 				}
 			}
 		}
