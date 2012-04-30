@@ -1,6 +1,7 @@
 lambda4jdt
 ==========
 
+EPL License http://www.eclipse.org/legal/epl-v10.html
 2012 version of lambda4jdt. Eclipse plugin to fold anonymous inner classes as lambdas in Java Editor.
 
 Read original description at http://code.google.com/p/lambda4jdt/.
