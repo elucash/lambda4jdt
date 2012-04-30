@@ -3,33 +3,33 @@ lambda4jdt
 
 2012 version of lambda4jdt. Eclipse plugin to fold anonymous inner classes as lambdas in Java Editor.
 
-Original description on [http://code.google.com/p/lambda4jdt/].
+Original description on http://code.google.com/p/lambda4jdt/.
 Goals:
 * Support for Eclipse Indigo 3.7.2
 * Remove need for marker comment, simplify to one-size fits all
 * No further support planned, no features, no Juno support etc
 
-Showcase
-
+Examples
+<pre>
 Executor e =...
 e.execute {
    doSomething(a);
 }
 final int i = 1;//you still need final to access i in function
-h.invoke(obj, ()=> doSomethingWithIn(i));
+h.invoke(obj, () doSomethingWithIn(i));
 Arrays.sort(array, (o1, o2) o1.hashCode() - o2.hashCode());
 
 //Nested closure constructs are supported to some degree
-interface Provider<T> {
+interface Provider&lt;T> {
   T get(Object context);
 }
 
-public Provider<Provider<Provider<String>>> myProvider() {
-  return new Provider<Provider<Provider<String>>>() {
-    public Provider<Provider<String>> get(Object c) {
-      return new Provider<Provider<String>>() {
-        public Provider<String> get(Object c) {
-          return new Provider<String>() {
+public Provider&lt;Provider&lt;Provider&lt;String>>> myProvider() {
+  return new Provider&lt;r<Provider<Provider<String>>>() {
+    public Provider&lt;Provider&lt;String>> get(Object c) {
+      return new Provider&lt;Provider&lt;String>>() {
+        public Provider&lt;String> get(Object c) {
+          return new Provider&lt;String>() {
             public String get(Object c) {
               return "MyFavoriteStringFactory" + c;
             }
@@ -41,6 +41,7 @@ public Provider<Provider<Provider<String>>> myProvider() {
 }
 //....
 // Which may be collapsed to..
-public Provider<Provider<Provider<String>>> myProvider() {
+public Provider&lt;Provider&lt;Provider&lt;String>>> myProvider() {
   return (c) (c) (c) "MyFavoriteStringFactory" + c;
 }
+</pre>
