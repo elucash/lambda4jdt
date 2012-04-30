@@ -17,7 +17,7 @@ Install plugins and then goto
 Preferences->Java->Editor->Folding, select folding to use "Lambda4jdt Folding".
 Any newly opened Java editor will pickup lambda4jdt
 
-Read also [http://code.google.com/p/guava-libraries/wiki/FunctionalExplained#Caveats]
+Read also http://code.google.com/p/guava-libraries/wiki/FunctionalExplained#Caveats
 
 Examples
 <pre>
