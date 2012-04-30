@@ -88,7 +88,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * @since 3.2 (API)
  */
 @SuppressWarnings({"restriction","unused"})
-public class CutomizedJavaFoldingStructureProvider implements IJavaFoldingStructureProvider,
+public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
         IJavaFoldingStructureProviderExtension {
 
 	private static final String FUNCTION_RELATION_TOKEN = "/* => */";
@@ -98,7 +98,7 @@ public class CutomizedJavaFoldingStructureProvider implements IJavaFoldingStruct
 	/**
 	 * A context that contains the information needed to compute the folding structure of an
 	 * {@link ICompilationUnit} or an {@link IClassFile}. Computed folding regions are collected via
-	 * {@linkplain #addProjectionRange(CutomizedJavaFoldingStructureProvider.JavaProjectionAnnotation, Position)
+	 * {@linkplain #addProjectionRange(FoldingStructureProvider.JavaProjectionAnnotation, Position)
 	 * addProjectionRange}.
 	 */
 	protected final class FoldingStructureComputationContext {
@@ -1270,7 +1270,7 @@ public class CutomizedJavaFoldingStructureProvider implements IJavaFoldingStruct
 	 * The projection state may be reset by calling {@link #initialize()}.
 	 * </p>
 	 */
-	public CutomizedJavaFoldingStructureProvider() {}
+	public FoldingStructureProvider() {}
 
 	/**
 	 * {@inheritDoc}
@@ -1576,7 +1576,7 @@ public class CutomizedJavaFoldingStructureProvider implements IJavaFoldingStruct
 	/**
 	 * Computes the folding structure for a given {@link IJavaElement java element}. Computed
 	 * projection annotations are
-	 * {@link CutomizedJavaFoldingStructureProvider.FoldingStructureComputationContext#addProjectionRange(CutomizedJavaFoldingStructureProvider.JavaProjectionAnnotation, Position)
+	 * {@link FoldingStructureProvider.FoldingStructureComputationContext#addProjectionRange(FoldingStructureProvider.JavaProjectionAnnotation, Position)
 	 * added} to the computation context.
 	 * <p>
 	 * Subclasses may extend or replace. The default implementation creates projection annotations
@@ -1844,7 +1844,7 @@ public class CutomizedJavaFoldingStructureProvider implements IJavaFoldingStruct
 
 	/**
 	 * Creates a comment folding position from an
-	 * {@link #alignRegion(IRegion, CutomizedJavaFoldingStructureProvider.FoldingStructureComputationContext)
+	 * {@link #alignRegion(IRegion, FoldingStructureProvider.FoldingStructureComputationContext)
 	 * aligned} region.
 	 * @param aligned an aligned region
 	 * @return a folding position corresponding to <code>aligned</code>
@@ -1855,7 +1855,7 @@ public class CutomizedJavaFoldingStructureProvider implements IJavaFoldingStruct
 
 	/**
 	 * Creates a folding position that remembers its member from an
-	 * {@link #alignRegion(IRegion, CutomizedJavaFoldingStructureProvider.FoldingStructureComputationContext)
+	 * {@link #alignRegion(IRegion, FoldingStructureProvider.FoldingStructureComputationContext)
 	 * aligned} region.
 	 * @param aligned an aligned region
 	 * @param member the member to remember

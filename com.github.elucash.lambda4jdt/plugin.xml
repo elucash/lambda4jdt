@@ -4,28 +4,19 @@
 	<extension
 		point="org.eclipse.jdt.ui.foldingStructureProviders">
 		<provider
-			id="com.googlecode.lambda4jdt.customizedFoldingProvider"
-			name="Lambda4jdt Arrow Closures"
-			class="com.github.elucash.lambda4jdt.CutomizedJavaFoldingStructureProvider">
+			id="com.github.elucash.lambda4jdt.foldingStructureProvider"
+			name="Lambda4jdt Folding provider"
+			class="com.github.elucash.lambda4jdt.FoldingStructureProvider">
 		</provider>
 	</extension>
 	
 	<extension
 		point="org.eclipse.jdt.ui.foldingStructureProviders">
 		<provider
-			id="com.googlecode.lambda4jdt.javaStyleClosuresProvider"
+			id="com.github.elucash.lambda4jdt.javaStyleClosuresProvider"
 			name="Lambda4jdt JavaStyle Closures"
 			class="com.github.elucash.lambda4jdt.JavaStyleClosuresFoldingProvider">
 		</provider>
 	</extension>
-	
-<!--	<extension
-		point="org.eclipse.jdt.ui.foldingStructureProviders">
-		<provider
-			id="com.googlecode.lambda4jdt.ngFoldingProvider"
-			name="NG Folding"
-			class="com.googlecode.lambda4jdt.ng.FoldingProvider">
-		</provider>
-	</extension> -->
 
 </plugin>
