@@ -276,7 +276,8 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 		/*
 		 * @see java.lang.Object#toString()
 		 */
-		public String toString() {
+		@Override
+        public String toString() {
 			return "JavaProjectionAnnotation:\n" + //$NON-NLS-1$
 			        "\telement: \t" + fJavaElement.toString() + "\n" + //$NON-NLS-1$ //$NON-NLS-2$
 			        "\tcollapsed: \t" + isCollapsed() + "\n" + //$NON-NLS-1$ //$NON-NLS-2$
@@ -309,11 +310,7 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 					IJavaElement[] c = t.getChildren();
 					if (c.length == 1 && c[0].getElementType() == IJavaElement.METHOD) {
 						IMethod m = (IMethod) c[0];
-						String source = m.getSource();
-						boolean hasToken1 = source.contains(FUNCTION_RELATION_TOKEN);
-						boolean hasToken2 = source.contains(FUNCTION_RELATION_TOKEN_ONELINE);
-						if (hasToken1 ^ hasToken2)
-							return m;
+                        return m;
 // IAnnotation[] annotations = m.getAnnotations();
 // if (annotations != null) {
 // for (IAnnotation annotation : annotations) {
@@ -726,12 +723,8 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 			int anonymousTypeLength = sourceRange.getLength();
 
 			String anomymousTypeSource = document.get(anonymousTypeOffset, anonymousTypeLength);
-			int functionTokenIndex = anomymousTypeSource.indexOf(FUNCTION_RELATION_TOKEN);
-			boolean isOneLinerToken = false;
-			if (functionTokenIndex < 0) {
-				functionTokenIndex = anomymousTypeSource.indexOf(FUNCTION_RELATION_TOKEN_ONELINE);
-				isOneLinerToken = true;
-			}
+            // int functionTokenIndex = anomymousTypeSource.indexOf(FUNCTION_RELATION_TOKEN);
+
 
 			// String anomymousTypeSource = foldedMethod.getSource();
 // if (cachedStructure != null && anomymousTypeSource.equals(cachedSourceForCheck))
@@ -752,7 +745,17 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 			scan.seekCorresponding(TokenNameLBRACE);
 			int f = scan.offset;
 
-			marker.end(f);
+            RegionHandle spaceBeforeClassLBrace = null;
+			
+            if (anomymousTypeSource.charAt(f - 1) == ' ') {
+                marker.end(f - 1);
+                marker.start(f - 1);
+                spaceBeforeClassLBrace = marker.end(f);
+            }
+            else {
+                marker.end(f);
+			}
+			
 			marker.start(f);
 
 			RegionHandle openingBraceRegion = marker.end(++f);
@@ -811,38 +814,35 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 			}
 
 			int rparenOffset = scan.offset;
-			boolean allWhitespaceBetweenRParenAndFunctionToken = anomymousTypeSource.substring(
-			        rparenOffset + 1, functionTokenIndex).trim().length() == 0;
+// boolean allWhitespaceBetweenRParenAndFunctionToken = anomymousTypeSource.substring(
+// rparenOffset + 1, functionTokenIndex).trim().length() == 0;
+//
+// if (!allWhitespaceBetweenRParenAndFunctionToken)
+// throw new UnsupportedOperationException("Token " + FUNCTION_RELATION_TOKEN +
+// " after parameter list right parenthese");
 
-			if (!allWhitespaceBetweenRParenAndFunctionToken)
-				throw new UnsupportedOperationException("Token " + FUNCTION_RELATION_TOKEN +
-				        " after parameter list right parenthese");
-
-			if (!marker.started)
-				marker.start(rparenOffset);
+            if (!marker.started)
+                marker.start(rparenOffset);
 
 			RegionHandle parameterListClosingParen = marker.end(rparenOffset + 1);
 
 			marker.start(rparenOffset + 1);
 
 			// To show functional arrow `=>`
-			int arrowIndex = functionTokenIndex + 2;
-			RegionHandle preArrowRegion = marker.end(arrowIndex);
-			marker.start(arrowIndex);
+            // int arrowIndex = functionTokenIndex + 2;
+            // RegionHandle preArrowRegion = marker.end(arrowIndex);
+            // marker.start(arrowIndex);
 
-			RegionHandle arrowRegion = marker.end(functionTokenIndex + 6);
-			marker.start(functionTokenIndex + 6);
+            // RegionHandle arrowRegion = marker.end(functionTokenIndex + 6);
+            // marker.start(functionTokenIndex + 6);
 
 // annotationDecorationDrawingOffsets.put((IType) fMember, anonymousTypeOffset +
 // functionTokenIndex + 3);
 
 			scan.seekCorresponding(TokenNameLBRACE);
 
-// // Start searching for lines a new
-// scan.lineEnds.clear();
-
 			int methodOpeningBraceOffset = scan.offset;
-			int lastPreMethodOffset = functionTokenIndex + FUNCTION_RELATION_TOKEN.length();
+            int lastPreMethodOffset = rparenOffset + 1;
 
 			// find where we go past all throws declaration if any
 			if (scan.identifierOffset > lastPreMethodOffset) {
@@ -852,8 +852,7 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 				}
 			}
 
-			// and hide it
-
+            // and hide it
 			boolean hasPreBraceRegion = lastPreMethodOffset < methodOpeningBraceOffset;
 			if (hasPreBraceRegion) {
 				marker.end(lastPreMethodOffset);
@@ -908,6 +907,12 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 				statementTerminator = lastBraceBlockEnd;
 				singleStatement = false;
 			}
+			
+			if (singleStatement) {
+                if (returnOffset < 0) {
+                    singleStatement = false;
+                }
+			}
 
 			boolean useClauseFolding = false;
 			if (!singleStatement) {
@@ -917,12 +922,15 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 			// case 1: single statement returning value function with no or one parameter
 			// No curly braces, no return keyword, no semicolon at end
 			if (singleStatement && returnOffset > 0 && paramsCount <= 1) {
+                parameterListOpenParen.reveal();// Show opening parameter paren
+                parameterListClosingParen.reveal();// Show closing parameter paren
+
 				// afterOpeningBraceWhitespace.remove();
 				marker.start(methodOpeningBraceOffset); // from after opening of method body
 
 // cutTab(anomymousTypeSource, marker, returnOffset - 1);
 
-				marker.end(returnOffset + 7); // to end of return keyword
+                marker.end(returnOffset + 6); // to end of return keyword
 				if (!(statementTerminator > returnOffset + 7)) {
 					System.out.println(anomymousTypeSource);
 				}
@@ -946,7 +954,7 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 				marker.start(methodOpeningBraceOffset); // from after opening of method body
 				// brace
 // cutTab(anomymousTypeSource, marker, returnOffset - 1);
-				marker.end(returnOffset + 7); // to end of return keyword
+                marker.end(returnOffset + 6); // to end of return keyword
 				if (statementTerminator <= returnOffset + 7)
 					throw new UnsupportedOperationException("Statement terminator offset " +
 					        statementTerminator + "; return end at  " + (returnOffset + 7));
@@ -962,6 +970,7 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 
 			// case 3: single statement void function with any parameters.
 			// With or without parameter parentheses and no semicolon at end
+            // DEAD CODE SEE CHECK ABOVE
 			if (singleStatement && returnOffset < 0) {
 				if (paramsCount > 1) {
 					parameterListOpenParen.reveal();// Show opening parameter paren
@@ -1017,12 +1026,13 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 					parameterListClosingParen.reveal();// Show closing parameter paren
 				}
 
-				if (hasPreBraceRegion && !isOneLinerToken) {
+                if (hasPreBraceRegion) {
 					preBraceRegion.reveal();
 				}
 
 				// Show up method openingBrace
-				methodOpeningBrace.reveal();
+                // openingBraceRegion.reveal();
+                methodOpeningBrace.reveal();
 
 // marker.start(methodOpeningBraceOffset); // from before opening of method body
 // marker.end(methodOpeningBraceOffset + 1);
@@ -1051,8 +1061,9 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 
 				try {
 					if (useClauseFolding) {
-						arrowRegion.offset++;
-						arrowRegion.length--;
+                        // spaceBeforeClassLBrace.reveal();
+                        // arrowRegion.offset++;
+                        // arrowRegion.length--;
 						// arrowRegion.reveal();// ?
 
 // if (editables != null)
@@ -1075,13 +1086,18 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 			}
 
 			// eat leading space before arror `=>` when no parameters
-			if (paramsCount == 0) {
-				preArrowRegion.length++;
-				arrowRegion.offset++;
-				arrowRegion.length--;
-			}
+            // if (paramsCount == 0) {
+            // preArrowRegion.length++;
+            // arrowRegion.offset++;
+            // arrowRegion.length--;
+            // }
+            // Show param parens when there's no params
+            if (paramsCount == 0) {
+                parameterListOpenParen.reveal();// Show opening parameter paren
+                parameterListClosingParen.reveal();// Show closing parameter paren
+            }
 
-			arrowRegion.reveal();
+            // arrowRegion.reveal();
 
 			IRegion[] resultingArray = marker.toProcessedArray();
 
