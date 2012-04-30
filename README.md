@@ -3,8 +3,8 @@ lambda4jdt
 
 2012 version of lambda4jdt. Eclipse plugin to fold anonymous inner classes as lambdas in Java Editor.
 
-Original description on http://code.google.com/p/lambda4jdt/.
-Goals:
+Read original description at http://code.google.com/p/lambda4jdt/.
+What's here:
 * Support for Eclipse Indigo 3.7.2
 * Remove need for marker comment, simplify to one-size fits all
 * No further development planned, no features, no Juno support etc
