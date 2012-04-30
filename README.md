@@ -7,7 +7,7 @@ Original description on http://code.google.com/p/lambda4jdt/.
 Goals:
 * Support for Eclipse Indigo 3.7.2
 * Remove need for marker comment, simplify to one-size fits all
-* No further support planned, no features, no Juno support etc
+* No further development planned, no features, no Juno support etc
 
 Install plugins and then goto
 Preferences->Java->Editor->Folding, select folding to use "Lambda4jdt Folding".
