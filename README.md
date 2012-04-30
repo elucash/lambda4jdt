@@ -9,6 +9,8 @@ What's here:
 * Remove need for marker comment, simplify to one-size fits all
 * No further development planned, no features, no Juno support etc
 
+EPL License http://www.eclipse.org/legal/epl-v10.html
+
 Install plugins and then goto
 Preferences->Java->Editor->Folding, select folding to use "Lambda4jdt Folding".
 Any newly opened Java editor will pickup lambda4jdt
