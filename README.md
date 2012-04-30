@@ -25,7 +25,7 @@ interface Provider&lt;T> {
 }
 
 public Provider&lt;Provider&lt;Provider&lt;String>>> myProvider() {
-  return new Provider&lt;r<Provider<Provider<String>>>() {
+  return new Provider&lt;Provider&lt;Provider&lt;String>>>() {
     public Provider&lt;Provider&lt;String>> get(Object c) {
       return new Provider&lt;Provider&lt;String>>() {
         public Provider&lt;String> get(Object c) {
