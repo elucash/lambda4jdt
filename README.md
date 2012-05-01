@@ -5,7 +5,7 @@ lambda4jdt
 
 Read original description at http://code.google.com/p/lambda4jdt/.
 What's here:
-* Support for Eclipse Indigo 3.7.2
+* Support for Eclipse Indigo SR2 3.7.2
 * Remove need for marker comment, simplify to one-size fits all
 * No further development planned, no features, no Juno support etc
 
