@@ -1123,16 +1123,16 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
 					marker.start(index + 1);
 					marker.end(index + 2);
 				} else {
-					boolean hasTabInFormOf4Spaces = true;
-					for (int i = index + 1; i < index + 5; i++) {
+          boolean hasTabInFormOf2Spaces = true;
+          for (int i = index + 1; i < index + 3; i++) {
 						if (anomymousTypeSource.charAt(i) != ' ') {
-							hasTabInFormOf4Spaces = false;
+              hasTabInFormOf2Spaces = false;
 							break;
 						}
 					}
-					if (hasTabInFormOf4Spaces) {
+          if (hasTabInFormOf2Spaces) {
 						marker.start(index + 1);
-						marker.end(index + 5);
+            marker.end(index + 3);
 					}
 				}
 			}
