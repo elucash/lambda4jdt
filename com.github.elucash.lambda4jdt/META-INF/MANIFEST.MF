@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Lambda folding for JDT
 Bundle-SymbolicName: com.github.elucash.lambda4jdt;singleton:=true
-Bundle-Version: 0.9.0.v2012
+Bundle-Version: 0.9.1.v2012
 Bundle-Vendor: Ievgen Lukash
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
