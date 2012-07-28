@@ -769,6 +769,15 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
       scan.seekCorresponding(TokenNameLBRACE);
       int f = scan.offset;
 
+      RegionHandle anonymousTypeBaseNameRegion = null;
+/*
+      if (scan.identifierOffset > 0 && scan.identifier != null) {
+        marker.end(scan.identifierOffset - 1);
+        marker.start(scan.identifierOffset);
+        anonymousTypeBaseNameRegion = marker.end(scan.identifierOffset + scan.identifier.length);
+        marker.start(scan.identifierOffset + scan.identifier.length);
+      }
+*/
       RegionHandle spaceBeforeClassLBrace = null;
 
       if (anomymousTypeSource.charAt(f - 1) == ' ') {
@@ -946,6 +955,13 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
         useClauseFolding = wheretherAnonymousTypeIsSingleParameterToHigherOrderMethod(
             document, anonymousTypeOffset, anonymousTypeLength);
       }
+/*
+      if (!useClauseFolding
+          && anonymousTypeBaseNameRegion.length < 20
+          && shouldRevealTypeNameHeuristic(anonymousTypeOffset, document)) {
+        anonymousTypeBaseNameRegion.reveal();
+      }
+*/
       // case 1: single statement returning value function with no or one parameter
       // No curly braces, no return keyword, no semicolon at end
       if (singleStatement && returnOffset > 0 && paramsCount <= 1) {
@@ -1243,6 +1259,16 @@ public class FoldingStructureProvider implements IJavaFoldingStructureProvider,
       throws BadLocationException {
     return document.get(declarationOffset - 1, 4).equals("(new") &&
         document.get(declarationOffset + declarationLength - 1, 3).equals("});");
+  }
+
+  protected boolean shouldRevealTypeNameHeuristic(int anonymousTypeOffset, IDocument document) {
+    try {
+      String usagePrefix = document.get(anonymousTypeOffset - 2, 5);
+      return usagePrefix.endsWith("(new") || usagePrefix.endsWith(", new");
+    }
+    catch (BadLocationException ex) {
+    }
+    return false;
   }
 
   /**
