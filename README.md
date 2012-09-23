@@ -5,15 +5,19 @@ lambda4jdt
 
 Read original description at http://code.google.com/p/lambda4jdt/.
 What's here:
-* Support for Eclipse Indigo 3.7.2
+* Support for Eclipse Indigo SR2 3.7.2
 * Remove need for marker comment, simplify to one-size fits all
 * No further development planned, no features, no Juno support etc
 
 EPL License http://www.eclipse.org/legal/epl-v10.html
 
+Update site: https://github.com/elucash/lambda4jdt/raw/master/com.github.elucash.lambda4jdt.site/
+
 Install plugins and then goto
 Preferences->Java->Editor->Folding, select folding to use "Lambda4jdt Folding".
 Any newly opened Java editor will pickup lambda4jdt
+
+Read also http://code.google.com/p/guava-libraries/wiki/FunctionalExplained#Caveats
 
 Examples
 <pre>
